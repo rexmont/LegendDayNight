@@ -18,8 +18,7 @@ import java.util.Calendar;
 public class LegendDayNightService extends WallpaperService {
     @Override
     public WallpaperService.Engine onCreateEngine() {
-        Drawable d = ContextCompat.getDrawable(this, R.drawable.day_2);
-        return new LegendEngine(d);
+        return new LegendEngine();
     }
 
     private class LegendEngine extends WallpaperService.Engine {
@@ -27,8 +26,9 @@ public class LegendDayNightService extends WallpaperService {
         private Drawable drawable;
         private boolean visible;
         private Handler handler;
+        private int lastDrawableId = -1;
 
-        public LegendEngine(Drawable drawable) {
+        public LegendEngine() {
             this.drawable = drawable;
             handler = new Handler();
         }
@@ -42,6 +42,7 @@ public class LegendDayNightService extends WallpaperService {
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
+            Log.d("wp", "start");
             this.visible = visible;
 
             if (visible) {
@@ -54,6 +55,7 @@ public class LegendDayNightService extends WallpaperService {
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             super.onSurfaceChanged(holder, format, width, height);
+            lastDrawableId = -1;
             handler.post(drawImage);
         }
 
@@ -71,24 +73,29 @@ public class LegendDayNightService extends WallpaperService {
         };
 
         private void draw() {
-            if (visible) {
+            Bitmap bitmap = getBitmapForHour();
+
+            if (bitmap != null) {
                 Canvas canvas = holder.lockCanvas();
                 int width = holder.getSurfaceFrame().width();
                 int height = holder.getSurfaceFrame().height();
-
-                Bitmap bitmap = getBitmapForHour();
                 bitmap = scaleCenterCrop(bitmap, height, width);
+
                 canvas.drawBitmap(
-                        Bitmap.createScaledBitmap(bitmap, width, height, true),
+                        bitmap,
                         0,
                         0,
                         null
                 );
+
                 holder.unlockCanvasAndPost(canvas);
-                handler.removeCallbacks(drawImage);
-                handler.postDelayed(drawImage, 15 * 60 * 1000);
                 Log.d("wp", "drawn!");
+            } else {
+                Log.d("wp", "no need to draw!");
             }
+
+            handler.removeCallbacks(drawImage);
+            handler.postDelayed(drawImage, 15 * 60 * 1000);
         }
 
         private Bitmap getBitmapForHour() {
@@ -98,7 +105,7 @@ public class LegendDayNightService extends WallpaperService {
             int drawableId = 0;
             Resources res = getResources();
 
-            if (currentHourIn24Format >= 20 && currentHourIn24Format < 5) {
+            if (currentHourIn24Format >= 20 || currentHourIn24Format < 5) {
                 drawableId = R.drawable.night;
             } else if (currentHourIn24Format >= 5 && currentHourIn24Format < 7) {
                 drawableId = R.drawable.dawn;
@@ -113,8 +120,12 @@ public class LegendDayNightService extends WallpaperService {
             } else {
                 drawableId = R.drawable.day;
             }
-
-            return BitmapFactory.decodeResource(res, drawableId);
+            if (lastDrawableId != drawableId) {
+                lastDrawableId = drawableId;
+                return BitmapFactory.decodeResource(res, drawableId);
+            } else {
+                return null;
+            }
         }
 
         private Bitmap scaleCenterCrop(Bitmap source, int newHeight, int newWidth) {
