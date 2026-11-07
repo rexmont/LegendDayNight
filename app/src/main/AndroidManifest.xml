@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.golife.legenddaynight">
+>
 
     <uses-feature
         android:name="android.software.live_wallpaper"
@@ -16,6 +16,7 @@
         <service
             android:name=".LegendDayNightService"
             android:enabled="true"
+            android:exported="true"
             android:label="Legend Day Night"
             android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
@@ -28,3 +29,4 @@
         </service>
     </application>
 </manifest>
+

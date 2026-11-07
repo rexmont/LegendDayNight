@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    namespace "com.golife.legenddaynight"
+    compileSdkVersion 36
+
 
     defaultConfig {
         applicationId "com.golife.legenddaynight"
@@ -12,6 +13,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // Distributed through GitHub; retain the original Android behavior for this release.
+    lint {
+        disable 'ExpiredTargetSdkVersion'
     }
 
     buildTypes {
@@ -31,3 +37,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+
