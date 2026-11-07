@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Legend Day Night</string>
+    <string name="setup_description">Set Legend Day Night as your live wallpaper. The image changes with the time of day. Tap below, then confirm in the Android wallpaper preview.</string>
+    <string name="set_wallpaper">Set wallpaper</string>
+    <string name="wallpaper_unavailable">This device does not provide a live wallpaper setup screen.</string>
 </resources>

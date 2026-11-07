@@ -1,7 +1,7 @@
 # LegendDayNight
 A Huawei Mate 20 Pro inspired Android live wallpaper that changes with the time of day.
 
-Download the signed APK from [GitHub Releases](https://github.com/rexmont/LegendDayNight/releases/latest). Install it, then select **Legend Day Night** in Android's live wallpaper picker. There is no launcher icon.
+Download the signed APK from [GitHub Releases](https://github.com/rexmont/LegendDayNight/releases/latest). Install it, open **Legend Day Night** from your apps, and tap **Set wallpaper**. Confirm in the Android wallpaper preview. This opens setup directly even when the phone hides the Live wallpapers menu.
 
 ## Build
 Use JDK 17 or newer and Android SDK 36. Set ANDROID_HOME or sdk.dir in local.properties, then run:
@@ -21,3 +21,4 @@ The release output is unsigned; sign it with your private release keystore using
 
 ## Roadmap
 * Retrieve sunset/sunrise times for the geographical location.
+
